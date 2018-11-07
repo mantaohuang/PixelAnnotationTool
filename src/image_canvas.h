@@ -7,7 +7,7 @@
 #include <QLabel>
 #include <QPen>
 #include <QScrollArea>
-
+#include <QTreeWidgetItem>
 class MainWindow;
 
 class ImageCanvas : public QLabel {
@@ -15,7 +15,7 @@ class ImageCanvas : public QLabel {
 
 public:
 
-	ImageCanvas(MainWindow *ui);
+	ImageCanvas(MainWindow *ui, QTreeWidgetItem *file_item);
     ~ImageCanvas();
 
 	void setId(int id);
@@ -71,7 +71,7 @@ private:
 	ColorMask        _color            ;
 	int              _pen_size         ;
 	bool             _button_is_pressed;
-
+	QTreeWidgetItem *_file_item		   ;
 };
 
 

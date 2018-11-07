@@ -4,12 +4,13 @@
 
 #include <QtDebug>
 #include <QtWidgets>
-
-ImageCanvas::ImageCanvas(MainWindow *ui) :
+#include <QTreeWidgetItem>
+ImageCanvas::ImageCanvas(MainWindow *ui, QTreeWidgetItem *file_item) :
     QLabel() ,
 	_ui(ui),
+	_file_item(file_item),
 	_alpha(0.5),
-	_pen_size(30) {
+	_pen_size(1) {
 
     _scroll_parent = new QScrollArea(ui);
     setParent(_scroll_parent);
@@ -94,6 +95,7 @@ void ImageCanvas::saveMask() {
     _undo_list.clear();
     _undo_index = 0;
     _ui->setStarAtNameOfTab(false);
+	_file_item->setBackground(0, QColor(100,100,50));
 }
 
 void ImageCanvas::scaleChanged(double scale) {

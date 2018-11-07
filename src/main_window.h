@@ -32,8 +32,8 @@ public:
 private:
 	
 	void loadConfigLabels();
-	ImageCanvas * newImageCanvas();
-	int getImageCanvas(QString name, ImageCanvas *ic) ;
+	ImageCanvas * newImageCanvas(QTreeWidgetItem *file_item);
+	int getImageCanvas(QString name, ImageCanvas * ic, QTreeWidgetItem *file_item);
     ImageCanvas * getImageCanvas(int index);
     ImageCanvas * getCurrentImageCanvas();
     ImageMask _tmp;

@@ -1,3 +1,6 @@
+# Build folder
+x64/
+
 # Prerequisites
 *.d
 

@@ -220,8 +220,8 @@ void MainWindow::allDisconnnect(const ImageCanvas * ic) {
     disconnect(checkbox_border_ws, SIGNAL(clicked()), ic, SLOT(update()));
 }
 
-ImageCanvas * MainWindow::newImageCanvas() {
-    ImageCanvas * ic = new ImageCanvas( this);
+ImageCanvas * MainWindow::newImageCanvas(QTreeWidgetItem *file_item) {
+    ImageCanvas * ic = new ImageCanvas(this, file_item);
 	ic->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 	ic->setScaledContents(true);
 	updateConnect(ic);
@@ -246,17 +246,19 @@ ImageCanvas * MainWindow::getImageCanvas(int index) {
     return ic;
 }
 
-int MainWindow::getImageCanvas(QString name, ImageCanvas * ic) {
+int MainWindow::getImageCanvas(QString name, ImageCanvas * ic, QTreeWidgetItem *file_item) {
 	for (int i = 0; i < tabWidget->count(); i++) {
-		if (tabWidget->tabText(i).startsWith(name) ) {
+		if (tabWidget->tabText(i).replace("&","").startsWith(name) ) {
             ic = getImageCanvas(i);
 			return i;
 		}
 	}
-	ic = newImageCanvas();
+	ic = newImageCanvas(file_item);
 	QString iDir = currentDir();
 	QString filepath(iDir + "/" + name);
 	ic->loadImage(filepath);
+	
+
     int index = tabWidget->addTab(ic->getScrollParent(), name);
     
 	return index;
@@ -286,14 +288,14 @@ void MainWindow::treeWidgetClicked() {
     if (iFile.isEmpty() || iDir.isEmpty())
         return;
     allDisconnnect(image_canvas);
-    int index = getImageCanvas(iFile, image_canvas);
+    int index = getImageCanvas(iFile, image_canvas, tree_widget_img->currentItem());
     updateConnect(image_canvas);
     tabWidget->setCurrentIndex(index);
 
 }
 
 void MainWindow::on_tree_widget_img_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous) {
-    treeWidgetClicked();
+    //treeWidgetClicked();
 }
 
 void MainWindow::on_actionOpenDir_triggered() {
@@ -329,7 +331,18 @@ void MainWindow::on_actionOpenDir_triggered() {
 			continue;
 
 		QTreeWidgetItem *currentFile = new QTreeWidgetItem(currentTreeDir);
+
+		QFont font;
+		font.setWeight(QFont::ExtraBold); // set font weight with enum QFont::Weight
+		//font.setPixelSize(25); // this for setting font size
 		currentFile->setText(0, files[i]);
+		QFileInfo check_file(current_dir.filePath(files[i].section(".",0,-2)+"_mask.png"));
+
+		// check if file exists and if yes: Is it really a file and no directory?
+		if (check_file.exists() && check_file.isFile()) {
+			currentFile->setBackground(0, QColor(100,100,50));
+		}
+		
 	}
 //	setWindowTitle("PixelAnnotation - " + openedDir);
 }

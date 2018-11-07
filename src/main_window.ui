@@ -213,7 +213,7 @@
          <item>
           <widget class="QSpinBox" name="spinbox_pen_size">
            <property name="minimum">
-            <number>0</number>
+            <number>1</number>
            </property>
            <property name="singleStep">
             <number>5</number>
